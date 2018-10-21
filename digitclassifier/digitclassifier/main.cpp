@@ -11,8 +11,13 @@
 
 int main(int argc, const char * argv[]) {
     digitClassifier digit;
-    digit.ImportData("digitdata/trainingimages");
-    std::cout<<digit.data_set[0][0];
+    digit.ImportData("/Users/a.kadri/Desktop/digitdata/trainingimages", "/Users/a.kadri/Desktop/digitdata/traininglabels");
+    for(int i=0;i<28;i++){
+        for(int j=0;j<28;j++){
+          std::cout << digit.data_set[0][std::make_pair(j, i)][0];
+        }
+        std::cout << "\n";
+    }
     std::cout << "Hello, World!\n";
     return 0;
 }

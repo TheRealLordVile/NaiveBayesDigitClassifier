@@ -20,7 +20,7 @@ typedef std::pair<int,int> Coordinates;
 class digitClassifier{
 public:
     digitClassifier();
-    const int kClassifyConst = 0.1;
+    const double kClassifyConst = 0.1;
     int num_train_exmp;
     std::vector<double> class_prob;
     void InitializeDataSet();
@@ -32,7 +32,7 @@ public:
     double GetPixelProbability(int digit, Coordinates coord, int color);
     bool WriteModelToFile(std::string file_path);
     std::string GetDigitString(int digit);
-    bool digitClassifier::ImportModelFromFile(std::string file_path);
+    bool ImportModelFromFile(std::string file_path);
     std::vector<int> num_images;
     std::map<int,std::map<Coordinates,std::vector<int>>> data_set;
     std::map<int,std::map<Coordinates,std::pair<double, double>>> prob_set;

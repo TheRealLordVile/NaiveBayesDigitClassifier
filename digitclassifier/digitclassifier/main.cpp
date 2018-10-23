@@ -11,13 +11,16 @@
 
 int main(int argc, const char * argv[]) {
     digitClassifier digit;
-    digit.ImportData("/Users/a.kadri/Desktop/digitdata/trainingimages", "/Users/a.kadri/Desktop/digitdata/traininglabels");
+    digit.ImportData("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/digitdata/trainingimages",
+                     "/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/digitdata/traininglabels");
     for(int i=0;i<28;i++){
         for(int j=0;j<28;j++){
-          std::cout << digit.data_set[0][std::make_pair(j, i)][0];
+          //std::cout << digit.data_set[5][std::make_pair(j, i)][460];
         }
-        std::cout << "\n";
+        //std::cout << "\n";
     }
-    std::cout << "Hello, World!\n";
+    digit.WriteModelToFile("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/datamodel.txt");
+    //digit.ImportModelFromFile("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/datamodel.json");
+    //std::cout << digit.num_train_exmp;
     return 0;
 }

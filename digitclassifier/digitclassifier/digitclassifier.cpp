@@ -9,15 +9,13 @@
 #include "digitclassifier.hpp"
 
 digitClassifier::digitClassifier(){
-    data_set = std::map<int,std::map<Coordinates,std::vector<int>>>();
-    prob_set = std::map<int,std::map<Coordinates,std::pair<double, double>>>();
-    class_prob = std::vector<double>();
     num_train_exmp = 0;
     InitializeProbabilitySet();
     InitializeDataSet();
 }
 
 void digitClassifier::InitializeDataSet(){
+    data_set = std::map<int,std::map<Coordinates,std::vector<int>>>();
     std::vector<int> initial_vec;
     for(int i =0; i<=9;i++) {
         std::map<Coordinates,std::vector<int>> numRepeatance;
@@ -31,6 +29,8 @@ void digitClassifier::InitializeDataSet(){
 }
 
 void digitClassifier::InitializeProbabilitySet(){
+    class_prob = std::vector<double>();
+    prob_set = std::map<int,std::map<Coordinates,std::pair<double, double>>>();
     std::pair<double,double> initial_values = std::make_pair(0, 0);
     for(int i =0; i<=9;i++) {
         std::map<Coordinates,std::pair<double,double>> numRepeatance;
@@ -51,18 +51,17 @@ void digitClassifier::ImportData(std::string data_path, std::string label_path){
     
     std::ifstream label_file(label_path);
     std::string label;
-
-    while(std::getline(train_file, line)) {
-        std::getline(label_file,label);
+    
+    
+    while(true) {
+        if(!std::getline(label_file,label)){
+            break;
+        }
         int label_ind = stoi(label);
         num_train_exmp++;
-        for (int i=0; i<28; i++) {
+        for (int i = 0; i < 28; i++) {
             std::getline(train_file,line);
-            std::cout<<line.size()<<std::endl;
-            if(line.size() != 28){
-                continue;
-            }
-            for (int j=0; j<28; j++) {
+            for (int j=0; j < 28; j++) {
                 Coordinates coord = std::make_pair(j,i);
                 if(line.at(j) == '+' || line.at(j) == '#'){
                     data_set[label_ind][coord].push_back(1);
@@ -70,9 +69,12 @@ void digitClassifier::ImportData(std::string data_path, std::string label_path){
                     data_set[label_ind][coord].push_back(0);
                 }
             }
+           
+
         }
+
     }
-    
+    std::cout<<num_train_exmp<<"\n";
     CalculateProbabilities();
     
 }
@@ -142,28 +144,41 @@ bool digitClassifier::WriteModelToFile(std::string file_path){
     std::ofstream output_file;
     output_file.open(file_path);
     output_file << num_train_exmp;
+    output_file << "\n";
     for (int digit = 0; digit <= 9; digit++) {
         output_file << GetDigitString(digit);
+        
     }
+    output_file.close();
     return true;
 }
 
 std::string digitClassifier::GetDigitString(int digit){
-    std::string digit_string = "\n";
+    std::string digit_string;
     for (int i = 0; i<28; i++) {
         for (int j = 0; j<28; j++) {
             Coordinates coord = std::make_pair(j, i);
             for (int k=0; k < data_set[digit][coord].size();k++){
-                digit_string += data_set[digit][coord][k];
+                digit_string += std::to_string(data_set[digit][coord][k]) + ",";
             }
+            digit_string += ";";
         }
     }
     
-    return digit_string + "\n end";
+    return digit_string + "\n";
 }
 
 bool digitClassifier::ImportModelFromFile(std::string file_path){
     std::ifstream input_file;
     std::string line;
+    std::getline(input_file, line);
+    num_train_exmp = std::stoi(line);
+    for (int digit = 0;digit <= 10;digit++) {
+        
+    }
+    std::cout << line<<"\n";
+   
+    
+    return true;
 }
 

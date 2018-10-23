@@ -28,7 +28,8 @@
 		DB4C0B36217A484A008D8678 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DB4C0B3D217A4BCD008D8678 /* digitclassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = digitclassifier.cpp; sourceTree = "<group>"; };
 		DB4C0B3E217A4BCD008D8678 /* digitclassifier.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = digitclassifier.hpp; sourceTree = "<group>"; };
-		DB4C0B40217A4BFD008D8678 /* digitdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = digitdata; sourceTree = "<group>"; };
+		DBB8F401217EC3530055DC2C /* digitdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = digitdata; sourceTree = "<group>"; };
+		DBFB7775217ED8680009E369 /* datamodel.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = datamodel.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,10 +62,11 @@
 		DB4C0B35217A484A008D8678 /* digitclassifier */ = {
 			isa = PBXGroup;
 			children = (
-				DB4C0B40217A4BFD008D8678 /* digitdata */,
+				DBB8F401217EC3530055DC2C /* digitdata */,
 				DB4C0B36217A484A008D8678 /* main.cpp */,
 				DB4C0B3D217A4BCD008D8678 /* digitclassifier.cpp */,
 				DB4C0B3E217A4BCD008D8678 /* digitclassifier.hpp */,
+				DBFB7775217ED8680009E369 /* datamodel.txt */,
 			);
 			path = digitclassifier;
 			sourceTree = "<group>";

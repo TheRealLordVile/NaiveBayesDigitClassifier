@@ -6,7 +6,6 @@
 //  Copyright © 2018 A.Kadri Türker. All rights reserved.
 //
 
-#include <iostream>
 #include "digitclassifier.hpp"
 
 int main(int argc, const char * argv[]) {
@@ -23,10 +22,16 @@ int main(int argc, const char * argv[]) {
         }
         //std::cout << "\n";
     }
-    digit.WriteModelToFile("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/datamodel.txt");
-    digit.ImportModelFromFile("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/datamodel.txt");
+    //digit.WriteModelToFile("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/datamodel.txt");
+    //digit.ImportModelFromFile("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/datamodel.txt");
     //std::cout << digit.num_train_exmp;
-    digit.ClassifyImages("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/digitdata/testimages",
+    ConfusionMatrix a = digit.ClassifyImages("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/digitdata/testimages",
                          "/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/digitclassifier/digitclassifier/digitdata/testlabels");
+    for (int i=0; i<=9; i++) {
+        for (int j=0; j<=9; j++) {
+            std::cout << a[j][i] << " ";
+        }
+        std::cout<< "\n";
+    }
     return 0;
 }

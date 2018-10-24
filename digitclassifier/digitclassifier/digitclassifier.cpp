@@ -100,7 +100,7 @@ void digitClassifier::CalculateProbabilities(){
     }
 }
 
-int digitClassifier::GetMostLikelyDigit(std::map<Coordinates,int> image_set){
+int digitClassifier::GetMostLikelyDigit(std::map<Coordinates,int> &image_set){
     double highest_prob = GetDigitProbability(0 ,image_set);
     int digit_highest_prob = 0;
     for (int digit = 1; digit <= 9; digit++) {
@@ -117,6 +117,7 @@ int digitClassifier::GetMostLikelyDigit(std::map<Coordinates,int> image_set){
 double digitClassifier::GetDigitProbability(const int &digit,
                                             std::map<Coordinates,int> &image_set
                                             ){
+    
     double digit_prob = log(class_prob[digit]);
     for (int row = 0; row < kImgSideLen; row++) {
         for (int col = 0; col < kImgSideLen; col++) {
@@ -137,7 +138,7 @@ double digitClassifier::GetPixelProbability(const int &digit, const int &color,
     return log(prob_set[digit][coord].second);
 }
 
-bool digitClassifier::WriteModelToFile(std::string file_path){
+bool digitClassifier::WriteModelToFile(const std::string &file_path){
     if (data_set.empty() || num_train_exmp == 0){
         return false;
     }
@@ -172,7 +173,7 @@ std::string digitClassifier::GetDigitString(const int &digit){
     return digit_string;
 }
 
-bool digitClassifier::ImportModelFromFile(std::string file_path){
+bool digitClassifier::ImportModelFromFile(const std::string &file_path) {
     InitializeProbabilitySet();
     InitializeDataSet();
     std::ifstream input_file(file_path);
@@ -207,8 +208,8 @@ bool digitClassifier::ImportModelFromFile(std::string file_path){
 }
 
 ConfusionMatrix digitClassifier::ClassifyImages(const std::string &file_path,
-                                     const std::string &label_path){
-    ConfusionMatrix confusion_matrix = Create2dMatrix();
+                                                const std::string &label_path) {
+    ConfusionMatrix confusion_matrix = CreateConfusionMatrix();
     std::ifstream train_file(file_path);
     std::string line;
     
@@ -253,8 +254,6 @@ ConfusionMatrix digitClassifier::ClassifyImages(const std::string &file_path,
             confusion_matrix[i][j] /= num_elements;
         }
     }
-    std::cout << correct_digits <<std::endl;
-    std::cout << n_digits<< std::endl;
     double percentage = 100 * correct_digits/n_digits;
     std::cout << percentage <<std::endl;
     return confusion_matrix;
@@ -272,7 +271,7 @@ std::vector<std::string> digitClassifier::SplitString(const std::string &string,
     return strings;
 }
 
-ConfusionMatrix digitClassifier::Create2dMatrix(){
+ConfusionMatrix digitClassifier::CreateConfusionMatrix(){
     ConfusionMatrix matrix;
     for (int row = kFirstDigit; row <= kLastDigit; row++) {
         std::vector<double> values;

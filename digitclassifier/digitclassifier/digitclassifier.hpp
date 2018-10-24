@@ -22,22 +22,12 @@ typedef std::vector<std::vector<double>> ConfusionMatrix;
 class digitClassifier{
 public:
     digitClassifier();
-    int num_train_exmp;
-    std::vector<double> class_prob;
     void ImportData(const std::string &data_path,
                     const std::string &label_path);
-    int GetMostLikelyDigit(std::map<Coordinates,int> image_set);
-    double GetDigitProbability(const int &digit,
-                               std::map<Coordinates,int> &image_set);
-    double GetPixelProbability(const int &digit, const int &color,
-                               const Coordinates &coord);
-    bool WriteModelToFile(std::string file_path);
-    std::string GetDigitString(const int &digit);
-    bool ImportModelFromFile(std::string file_path);
+    bool WriteModelToFile(const std::string &file_path);
+    bool ImportModelFromFile(const std::string &file_path);
     ConfusionMatrix ClassifyImages(const std::string &file_path,
                         const std::string &label_path);
-    std::map<int,std::map<Coordinates,std::pair<int, int>>> data_set;
-    std::map<int,std::map<Coordinates,std::pair<double, double>>> prob_set;
 private:
     const std::pair<int, int> kDefualtPairVal = std::make_pair(0,0);
     const double kClassifyConst = 0.00000009;
@@ -48,11 +38,26 @@ private:
     const int kGrayBlackPixVal = 1;
     const char kPixValSeparator = ' ';
     const char kCoorValSeperator = ',';
-    std::vector<std::string> SplitString(const std::string &string,
-                                         const char &split_point);
-    ConfusionMatrix Create2dMatrix();
+    
+    int num_train_exmp;
+    std::map<int,std::map<Coordinates,std::pair<int, int>>> data_set;
+    std::map<int,std::map<Coordinates,std::pair<double, double>>> prob_set;
+    std::vector<double> class_prob;
+    
+    ConfusionMatrix CreateConfusionMatrix();
     void InitializeDataSet();
     void InitializeProbabilitySet();
     void CalculateProbabilities();
+    
+    
+    int GetMostLikelyDigit(std::map<Coordinates,int> &image_set);
+    double GetDigitProbability(const int &digit,
+                               std::map<Coordinates,int> &image_set);
+    double GetPixelProbability(const int &digit, const int &color,
+                               const Coordinates &coord);
+    
+    std::string GetDigitString(const int &digit);
+    std::vector<std::string> SplitString(const std::string &string,
+                                         const char &split_point);
 };
 #endif /* digitclassifier_hpp */

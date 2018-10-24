@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB4C0B37217A484A008D8678 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB4C0B36217A484A008D8678 /* main.cpp */; };
+		DB4913D621812E540029BA1C /* digitclassifiertest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB4913D521812E540029BA1C /* digitclassifiertest.cpp */; };
 		DB4C0B3F217A4BCD008D8678 /* digitclassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB4C0B3D217A4BCD008D8678 /* digitclassifier.cpp */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DB4913D521812E540029BA1C /* digitclassifiertest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = digitclassifiertest.cpp; sourceTree = "<group>"; };
 		DB4C0B33217A484A008D8678 /* digitclassifier */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = digitclassifier; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB4C0B36217A484A008D8678 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DB4C0B3D217A4BCD008D8678 /* digitclassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = digitclassifier.cpp; sourceTree = "<group>"; };
@@ -68,6 +69,7 @@
 				DB72EE0621803E7100721F88 /* catch.hpp */,
 				DB4C0B3D217A4BCD008D8678 /* digitclassifier.cpp */,
 				DB4C0B3E217A4BCD008D8678 /* digitclassifier.hpp */,
+				DB4913D521812E540029BA1C /* digitclassifiertest.cpp */,
 				DBFB7775217ED8680009E369 /* datamodel.txt */,
 			);
 			path = digitclassifier;
@@ -130,7 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB4C0B3F217A4BCD008D8678 /* digitclassifier.cpp in Sources */,
-				DB4C0B37217A484A008D8678 /* main.cpp in Sources */,
+				DB4913D621812E540029BA1C /* digitclassifiertest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

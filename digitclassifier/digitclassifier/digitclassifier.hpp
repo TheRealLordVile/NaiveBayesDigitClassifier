@@ -15,12 +15,13 @@
 #include <fstream>
 #include <map>
 #include <math.h>
+#include <sstream>
 
 typedef std::pair<int,int> Coordinates;
 class digitClassifier{
 public:
     digitClassifier();
-    const double kClassifyConst = 0.1;
+    const double kClassifyConst = 0.00000009;
     int num_train_exmp;
     std::vector<double> class_prob;
     void InitializeDataSet();
@@ -33,9 +34,12 @@ public:
     bool WriteModelToFile(std::string file_path);
     std::string GetDigitString(int digit);
     bool ImportModelFromFile(std::string file_path);
+    void ClassifyImages(std::string file_path, std::string label_path);
     std::vector<int> num_images;
     std::map<int,std::map<Coordinates,std::vector<int>>> data_set;
     std::map<int,std::map<Coordinates,std::pair<double, double>>> prob_set;
 private:
+    std::vector<std::string> SplitString(const std::string &string,
+                                         const char &split_point);
 };
 #endif /* digitclassifier_hpp */

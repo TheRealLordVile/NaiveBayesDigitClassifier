@@ -52,7 +52,6 @@ void digitClassifier::ImportData(std::string data_path, std::string label_path){
     std::ifstream label_file(label_path);
     std::string label;
     
-    
     while(true) {
         if(!std::getline(label_file,label)){
             break;
@@ -69,12 +68,9 @@ void digitClassifier::ImportData(std::string data_path, std::string label_path){
                     data_set[label_ind][coord].push_back(0);
                 }
             }
-           
-
         }
 
     }
-    std::cout<<num_train_exmp<<"\n";
     CalculateProbabilities();
     
 }
@@ -98,6 +94,7 @@ void digitClassifier::CalculateProbabilities(){
                                     (num_repeatence+ 2 * kClassifyConst);
                 double prob_grblack = (num_grblack + kClassifyConst) /
                                       (num_repeatence+ 2 * kClassifyConst);
+                
                 prob_set[i][coord] = std::make_pair(prob_white, prob_grblack);
             }
         }
@@ -105,15 +102,16 @@ void digitClassifier::CalculateProbabilities(){
 }
 
 int digitClassifier::GetMostLikelyDigit(std::map<Coordinates,int> image_set){
-    double highest_prob = 0;
-    int digit_highest_prob = -1;
-    for (int digit = 0; digit <= 9; digit++) {
+    double highest_prob = GetDigitProbability(0 ,image_set);
+    int digit_highest_prob = 0;
+    for (int digit = 1; digit <= 9; digit++) {
         double digit_prob = GetDigitProbability(digit ,image_set);
         if (digit_prob > highest_prob) {
             highest_prob = digit_prob;
             digit_highest_prob = digit;
         }
     }
+    
     return digit_highest_prob;
 }
 
@@ -141,12 +139,13 @@ bool digitClassifier::WriteModelToFile(std::string file_path){
     if (data_set.empty() || num_train_exmp == 0){
         return false;
     }
+    
     std::ofstream output_file;
     output_file.open(file_path);
     output_file << num_train_exmp;
     output_file << "\n";
     for (int digit = 0; digit <= 9; digit++) {
-        output_file << GetDigitString(digit);
+        output_file << GetDigitString(digit) + "\n";
         
     }
     output_file.close();
@@ -155,30 +154,101 @@ bool digitClassifier::WriteModelToFile(std::string file_path){
 
 std::string digitClassifier::GetDigitString(int digit){
     std::string digit_string;
-    for (int i = 0; i<28; i++) {
-        for (int j = 0; j<28; j++) {
+    for (int i = 0; i < 28; i++) {
+        for (int j = 0; j < 28; j++) {
             Coordinates coord = std::make_pair(j, i);
-            for (int k=0; k < data_set[digit][coord].size();k++){
+            for (int k = 0; k < data_set[digit][coord].size(); k++){
                 digit_string += std::to_string(data_set[digit][coord][k]) + ",";
             }
             digit_string += ";";
         }
     }
     
-    return digit_string + "\n";
+    return digit_string;
 }
 
 bool digitClassifier::ImportModelFromFile(std::string file_path){
-    std::ifstream input_file;
+    InitializeProbabilitySet();
+    InitializeDataSet();
+    std::ifstream input_file(file_path);
     std::string line;
     std::getline(input_file, line);
+    std::cout<<line;
     num_train_exmp = std::stoi(line);
     for (int digit = 0;digit <= 10;digit++) {
+        std::getline(input_file, line);
+        std::vector<std::string> vec = SplitString(line, ';');
+        for (int i = 0; i < 28; i++) {
+            for (int j = 0; j < 28; j++) {
+                std::vector<std::string> wrryy = SplitString(vec[j+28*i],',');
+                for (int k=0; k < wrryy.size(); k++) {
+                    if(wrryy[k] ==""){
+                        continue;
+                    }
+                    data_set[digit][std::make_pair(j,i)].push_back(std::stoi(wrryy[k]));
+                }
+            }
+        }
         
     }
-    std::cout << line<<"\n";
    
     
     return true;
 }
+
+void digitClassifier::ClassifyImages(std::string file_path, std::string label_path){
+    
+    std::ifstream train_file(file_path);
+    std::string line;
+    
+    std::ifstream label_file(label_path);
+    std::string label;
+    
+    std::vector<int> digits;
+    int correct_digits = 0;
+    int n_digits = 0;
+    while(true) {
+        if(!std::getline(label_file,label)){
+            break;
+        }
+        n_digits++;
+        int label_ind = stoi(label);
+        std::map<Coordinates,int> img;
+        for (int i = 0; i < 28; i++) {
+            std::getline(train_file,line);
+            for (int j=0; j < 28; j++) {
+                Coordinates coord = std::make_pair(j,i);
+                if(line.at(j) == '+' || line.at(j) == '#'){
+                    img[coord] = 1;
+                } else{
+                    img[coord] = 0;
+                }
+            }
+        }
+        
+        if(GetMostLikelyDigit(img) == label_ind){
+            correct_digits++;
+        }
+        
+    }
+    std::cout << correct_digits <<std::endl;
+    std::cout << n_digits<< std::endl;
+    double percentage = 100*correct_digits/n_digits;
+    std::cout << percentage <<std::endl;
+    
+}
+
+std::vector<std::string> digitClassifier::SplitString(const std::string &string,
+                                                     const char &split_point) {
+    std::vector<std::string> strings;
+    std::stringstream ss(string);
+    std::string part;
+    while (getline(ss, part, split_point)) {
+        strings.push_back(part);
+    }
+    
+    return strings;
+}
+
+
 

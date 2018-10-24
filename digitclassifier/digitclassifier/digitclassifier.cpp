@@ -157,13 +157,17 @@ std::string digitClassifier::GetDigitString(int digit){
     for (int i = 0; i < 28; i++) {
         for (int j = 0; j < 28; j++) {
             Coordinates coord = std::make_pair(j, i);
-            for (int k = 0; k < data_set[digit][coord].size(); k++){
-                digit_string += std::to_string(data_set[digit][coord][k]) + ",";
-            }
-            digit_string += ";";
+                int num_whit = std::count(data_set[digit][coord].begin(),
+                                          data_set[digit][coord].end() , 0);
+                int num_grblack = std::count(data_set[digit][coord].begin(),
+                                             data_set[digit][coord].end() , 1);
+                digit_string += std::to_string(num_whit) + " " +
+                                std::to_string(num_grblack);
+            
+            digit_string += ",";
         }
     }
-    
+    digit_string.pop_back();
     return digit_string;
 }
 
@@ -173,27 +177,31 @@ bool digitClassifier::ImportModelFromFile(std::string file_path){
     std::ifstream input_file(file_path);
     std::string line;
     std::getline(input_file, line);
-    std::cout<<line;
     num_train_exmp = std::stoi(line);
-    for (int digit = 0;digit <= 10;digit++) {
+    for (int digit = 0;digit <= 9; digit++) {
         std::getline(input_file, line);
-        std::vector<std::string> vec = SplitString(line, ';');
+        std::vector<std::string> pairs = SplitString(line, ',');
         for (int i = 0; i < 28; i++) {
             for (int j = 0; j < 28; j++) {
-                std::vector<std::string> wrryy = SplitString(vec[j+28*i],',');
-                for (int k=0; k < wrryy.size(); k++) {
-                    if(wrryy[k] ==""){
-                        continue;
-                    }
-                    data_set[digit][std::make_pair(j,i)].push_back(std::stoi(wrryy[k]));
+                std::vector<std::string> num_repeat = SplitString(pairs[j+28*i],' ');
+                int num_white = std::stoi(num_repeat[0]);
+                int num_grblack = std::stoi(num_repeat[1]);
+                Coordinates coord = std::make_pair(j,i);
+                for(int i=0;i<num_white;i++){
+                    data_set[digit][coord].push_back(0);
                 }
+                for(int i=0;i<num_grblack;i++){
+                    data_set[digit][coord].push_back(1);
+                }
+                
             }
+            
         }
         
     }
-   
-    
+    CalculateProbabilities();
     return true;
+
 }
 
 void digitClassifier::ClassifyImages(std::string file_path, std::string label_path){
@@ -244,7 +252,11 @@ std::vector<std::string> digitClassifier::SplitString(const std::string &string,
     std::stringstream ss(string);
     std::string part;
     while (getline(ss, part, split_point)) {
+        if(part != ""){
         strings.push_back(part);
+        }else{
+            std::cout<<"wat";
+        }
     }
     
     return strings;

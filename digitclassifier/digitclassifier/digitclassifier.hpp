@@ -22,6 +22,7 @@ typedef std::vector<std::vector<double>> ConfusionMatrix;
 class digitClassifier{
 public:
     digitClassifier();
+    void UserInterface();
     void ImportData(const std::string &data_path,
                     const std::string &label_path);
     bool WriteModelToFile(const std::string &file_path);
@@ -38,6 +39,26 @@ private:
     const int kGrayBlackPixVal = 1;
     const char kPixValSeparator = ' ';
     const char kCoorValSeperator = ',';
+    const std::string kDefTrainDataPath = "/Users/a.kadri/Documents/"
+                                          "naive-bayes-TheRealLordVile/"
+                                          "digitclassifier/digitclassifier/"
+                                          "digitdata/trainingimages";
+    const std::string kDefTrainLabelPath = "/Users/a.kadri/Documents/"
+                                           "naive-bayes-TheRealLordVile/"
+                                           "digitclassifier/digitclassifier/"
+                                           "digitdata/traininglabels";
+    const std::string kDefTestDataPath = "/Users/a.kadri/Documents/"
+                                             "naive-bayes-TheRealLordVile/"
+                                             "digitclassifier/digitclassifier/"
+                                             "digitdata/testimages";
+    const std::string kDefTestLabelPath = "/Users/a.kadri/Documents/"
+                                          "naive-bayes-TheRealLordVile/"
+                                          "digitclassifier/digitclassifier/"
+                                          "digitdata/testlabels";
+    const std::string kDefModelWriteReadPath = "/Users/a.kadri/Documents/"
+                                               "naive-bayes-TheRealLordVile/"
+                                               "digitclassifier/"
+                                               "digitclassifier/datamodel.txt";
     
     int num_train_exmp;
     std::map<int,std::map<Coordinates,std::pair<int, int>>> data_set;
@@ -59,5 +80,6 @@ private:
     std::string GetDigitString(const int &digit);
     std::vector<std::string> SplitString(const std::string &string,
                                          const char &split_point);
+    void EvaluateUserInput(const int &user_choice);
 };
 #endif /* digitclassifier_hpp */

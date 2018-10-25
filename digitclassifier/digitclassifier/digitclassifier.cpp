@@ -38,10 +38,88 @@ void digitClassifier::InitializeProbabilitySet(){
                 numRepeatance[std::make_pair(col, row)] = kDefualtPairVal;
             }
         }
-        
         prob_set[digit] = numRepeatance;
     }
     
+}
+
+void digitClassifier::UserInterface(){
+    while (true) {
+    std::cout<< "Please Enter 0 to read training data to create a model, "
+                "1 to write an existing model to a file, 2 to read an existing "
+                "model from a file, 3 to clasify data" << std::endl;
+    int user_choice;
+    try {
+        std::string input;
+        getline(std::cin, input);
+        user_choice = std::stoi(input);
+    } catch (std::invalid_argument& e) {
+        std::cout << "Please give a valid input" << std::endl;
+        continue;
+    }
+        EvaluateUserInput(user_choice);
+    }
+}
+
+void digitClassifier::EvaluateUserInput(const int &user_choice){
+    switch (user_choice) {
+        case 0:{
+            std::cout << "Please provide a file path for data or leave blank for default" << std::endl;
+            std::string data_path;
+            getline(std::cin, data_path);
+            if (data_path == ""){
+                ImportData(kDefTrainDataPath,kDefTrainLabelPath);
+            } else {
+            std::cout << "Please provide a file path for training labels" << std::endl;
+            std::string label_path;
+            getline(std::cin, label_path);
+                ImportData(data_path, label_path);
+            }
+            std::cout << "You have succesfully created a model" << std::endl;
+            return;
+        } case 1:{
+            std::cout << "Please provide a file path to write a model or leave blank for default" << std::endl;
+            std::string file_path;
+            getline(std::cin, file_path);
+            if(file_path == ""){
+                WriteModelToFile(kDefModelWriteReadPath);
+            } else {
+                WriteModelToFile(file_path);
+            }
+            std::cout << "You have succesfully wrote a model to a file" << std::endl;
+
+            return;
+        } case 2:{
+            std::cout << "Please provide a file path to read a model from or leave blank for default" << std::endl;
+            std::string file_path;
+            getline(std::cin, file_path);
+            if(file_path == ""){
+                ImportModelFromFile(kDefModelWriteReadPath);
+            } else {
+                ImportModelFromFile(file_path);
+            }
+            std::cout << "You have succesfully read a model from a file" << std::endl;
+            
+            return;
+        } case 3:{
+            std::cout << "Please provide a file path for data or leave blank for default" << std::endl;
+            std::string data_path;
+            getline(std::cin, data_path);
+            if (data_path == ""){
+                ClassifyImages(kDefTestDataPath,kDefTestLabelPath);
+            } else {
+                std::cout << "Please provide a file path for training labels" << std::endl;
+                std::string label_path;
+                getline(std::cin, label_path);
+                ClassifyImages(data_path, label_path);
+            }
+            std::cout << "You have succesfully classified images and created a confusion matrix" << std::endl;
+            return;
+        }
+        default:
+            std::cout << "Please enter a valid input"<< std::endl;
+            return;
+    }
 }
 
 void digitClassifier::ImportData(const std::string &data_path,
@@ -71,7 +149,6 @@ void digitClassifier::ImportData(const std::string &data_path,
 
     }
     CalculateProbabilities();
-    
 }
 
 void digitClassifier::CalculateProbabilities(){

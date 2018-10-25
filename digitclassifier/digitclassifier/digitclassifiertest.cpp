@@ -7,4 +7,9 @@
 //
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "digitclassifier.hpp"
+#include "digitclassifier.cpp"
+
+TEST_CASE("Probability"){
+    digitClassifier digit;
+    
+}

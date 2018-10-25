@@ -71,6 +71,8 @@ private:
     const int kGrayBlackPixVal = 1;
     const char kPixValSeparator = ' ';
     const char kCoorValSeperator = ',';
+    const char kGrayPixelChar = '+';
+    const char kBlackPixelChar = '#';
     const std::string kDefTrainDataPath = "/Users/a.kadri/Documents/"
                                           "naive-bayes-TheRealLordVile/"
                                           "digitclassifier/digitclassifier/"

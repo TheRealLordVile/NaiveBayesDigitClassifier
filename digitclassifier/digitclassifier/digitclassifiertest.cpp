@@ -99,6 +99,66 @@ TEST_CASE("File Writing/ Reading Tests"){
     }
     
 }
-TEST_CASE("Image classification Tests"){
+TEST_CASE("Image Classification Tests"){
+    digitClassifier digit;
+    digit.ImportData("/Users/a.kadri/Documents/naive-bayes-TheRealLordVile/"
+                     "digitclassifier/digitclassifier/digitdata/trainingimages",
+                     "/Users/a.kadri/Documents/naive-bayes-TheRealLordVile"
+                     "/digitclassifier/digitclassifier/"
+                     "digitdata/traininglabels");
     
+    SECTION("Check If Confusion matrix is valid"){
+        ConfusionMatrix matrix = digit.ClassifyImages("/Users/a.kadri/Documents"
+                             "/naive-bayes-TheRealLordVile/digitclassifier/"
+                             "digitclassifier/digitdata/testimages",
+                             "/Users/a.kadri/Documents/"
+                             "naive-bayes-TheRealLordVile/digitclassifier/"
+                             "digitclassifier/digitdata/testlabels");
+        for (int i=0; i<=9; i++) {
+            double prob = 0;
+            for (int j=0; j<=9; j++) {
+                prob += matrix[i][j];
+            }
+            int total_prob = std::round(prob);
+            REQUIRE(total_prob == 1);
+        }
+    }
+    
+    SECTION("Check if Same Models Provide Same Matrix") {
+        ConfusionMatrix matrix = digit.ClassifyImages("/Users/a.kadri/Documents"
+                                 "/naive-bayes-TheRealLordVile/digitclassifier/"
+                                 "digitclassifier/digitdata/testimages",
+                                 "/Users/a.kadri/Documents/"
+                                 "naive-bayes-TheRealLordVile/digitclassifier/"
+                                 "digitclassifier/digitdata/testlabels");
+        digit.WriteModelToFile("/Users/a.kadri/Documents/"
+                               "naive-bayes-TheRealLordVile/"
+                               "digitclassifier"
+                               "/digitclassifier/datamodel.txt");
+        digitClassifier importedDigit;
+        importedDigit.ImportModelFromFile("/Users/a.kadri/Documents/"
+                                          "naive-bayes-TheRealLordVile/"
+                                          "digitclassifier"
+                                          "/digitclassifier/datamodel.txt");
+        ConfusionMatrix matrix2 = importedDigit.ClassifyImages("/Users/a.kadri/"
+                                 "Documents/naive-bayes-TheRealLordVile/"
+                                 "digitclassifier/digitclassifier/digitdata/"
+                                 "testimages","/Users/a.kadri/Documents/"
+                                 "naive-bayes-TheRealLordVile/digitclassifier/"
+                                 "digitclassifier/digitdata/testlabels");
+        REQUIRE(matrix == matrix2);
+    }
+    
+    SECTION("Check If Each Digit is at least %60 Correct") {
+        ConfusionMatrix matrix = digit.ClassifyImages("/Users/a.kadri/Documents"
+                                 "/naive-bayes-TheRealLordVile/digitclassifier/"
+                                 "digitclassifier/digitdata/testimages",
+                                 "/Users/a.kadri/Documents/"
+                                 "naive-bayes-TheRealLordVile/digitclassifier/"
+                                 "digitclassifier/digitdata/testlabels");
+        double minimum_correct = 0.6;
+        for (int i=9; i<=9; i++) {
+            REQUIRE(matrix[i][i] >= minimum_correct);
+        }
+    }
 }

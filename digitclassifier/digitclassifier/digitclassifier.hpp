@@ -22,6 +22,13 @@ typedef std::vector<std::vector<double>> ConfusionMatrix;
 
 class digitClassifier{
 public:
+    // Class variables that represent the "model" and probabilities.
+    // All set to public for testing.
+    int num_train_exmp;
+    std::map<int,std::map<Coordinates,std::pair<int, int>>> data_set;
+    std::map<int,std::map<Coordinates,std::pair<double, double>>> prob_set;
+    std::vector<double> class_prob;
+    
     // Constructor of the class, takes no arguments.
     // Initializes class variables.
     digitClassifier();
@@ -84,11 +91,6 @@ private:
                                                "naive-bayes-TheRealLordVile/"
                                                "digitclassifier/"
                                                "digitclassifier/datamodel.txt";
-    // Class variables that represent the "model" and probabilities.
-    int num_train_exmp;
-    std::map<int,std::map<Coordinates,std::pair<int, int>>> data_set;
-    std::map<int,std::map<Coordinates,std::pair<double, double>>> prob_set;
-    std::vector<double> class_prob;
     
     // Creates a 2D vector of type double of size 10 by 10.
     // Sets every value in the 2d vector to 0 by default.

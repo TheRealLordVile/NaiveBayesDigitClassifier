@@ -64,21 +64,25 @@ void digitClassifier::UserInterface(){
 void digitClassifier::EvaluateUserInput(const int &user_choice){
     switch (user_choice) {
         case 0:{
-            std::cout << "Please provide a file path for data or leave blank for default" << std::endl;
+            std::cout << "Please provide a file path for data"
+                         "or leave blank for default" << std::endl;
             std::string data_path;
             getline(std::cin, data_path);
             if (data_path == ""){
                 ImportData(kDefTrainDataPath,kDefTrainLabelPath);
             } else {
-            std::cout << "Please provide a file path for training labels" << std::endl;
+            std::cout << "Please provide a file path"
+                         " for training labels" << std::endl;
             std::string label_path;
             getline(std::cin, label_path);
                 ImportData(data_path, label_path);
             }
             std::cout << "You have succesfully created a model" << std::endl;
             return;
+            
         } case 1:{
-            std::cout << "Please provide a file path to write a model or leave blank for default" << std::endl;
+            std::cout << "Please provide a file path to write a model "
+                         "or leave blank for default" << std::endl;
             std::string file_path;
             getline(std::cin, file_path);
             if(file_path == ""){
@@ -86,11 +90,13 @@ void digitClassifier::EvaluateUserInput(const int &user_choice){
             } else {
                 WriteModelToFile(file_path);
             }
-            std::cout << "You have succesfully wrote a model to a file" << std::endl;
-
+            std::cout << "You have succesfully wrote a model"
+                         " to a file" << std::endl;
             return;
+            
         } case 2:{
-            std::cout << "Please provide a file path to read a model from or leave blank for default" << std::endl;
+            std::cout << "Please provide a file path to read a model from "
+                         "or leave blank for default" << std::endl;
             std::string file_path;
             getline(std::cin, file_path);
             if(file_path == ""){
@@ -98,25 +104,30 @@ void digitClassifier::EvaluateUserInput(const int &user_choice){
             } else {
                 ImportModelFromFile(file_path);
             }
-            std::cout << "You have succesfully read a model from a file" << std::endl;
-            
+            std::cout << "You have succesfully read a model"
+                         " from a file" << std::endl;
             return;
+            
         } case 3:{
-            std::cout << "Please provide a file path for data or leave blank for default" << std::endl;
+            std::cout << "Please provide a file path for data "
+                         "or leave blank for default" << std::endl;
             std::string data_path;
             getline(std::cin, data_path);
             if (data_path == ""){
                 ClassifyImages(kDefTestDataPath,kDefTestLabelPath);
             } else {
-                std::cout << "Please provide a file path for training labels" << std::endl;
+                std::cout << "Please provide a file path for"
+                             " training labels" << std::endl;
                 std::string label_path;
                 getline(std::cin, label_path);
                 ClassifyImages(data_path, label_path);
             }
-            std::cout << "You have succesfully classified images and created a confusion matrix" << std::endl;
+            
+            std::cout << "You have succesfully classified images"
+                         " and created a confusion matrix" << std::endl;
             return;
-        }
-        default:
+            
+        } default:
             std::cout << "Please enter a valid input"<< std::endl;
             return;
     }
@@ -178,9 +189,9 @@ void digitClassifier::CalculateProbabilities(){
 }
 
 int digitClassifier::GetMostLikelyDigit(std::map<Coordinates,int> &image_set){
-    double highest_prob = GetDigitProbability(0 ,image_set);
-    int digit_highest_prob = 0;
-    for (int digit = 1; digit <= 9; digit++) {
+    double highest_prob = GetDigitProbability(kFirstDigit ,image_set);
+    int digit_highest_prob = kFirstDigit;
+    for (int digit = kFirstDigit + 1; digit <= kLastDigit; digit++) {
         double digit_prob = GetDigitProbability(digit ,image_set);
         if (digit_prob > highest_prob) {
             highest_prob = digit_prob;
@@ -332,7 +343,7 @@ ConfusionMatrix digitClassifier::ClassifyImages(const std::string &file_path,
         }
     }
     double percentage = 100 * correct_digits/n_digits;
-    std::cout << percentage <<std::endl;
+    std::cout << percentage <<"% accurate" <<std::endl;
     return confusion_matrix;
 }
 

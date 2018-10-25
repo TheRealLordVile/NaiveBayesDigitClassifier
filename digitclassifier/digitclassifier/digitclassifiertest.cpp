@@ -9,7 +9,9 @@
 #include "catch.hpp"
 #include "digitclassifier.cpp"
 
-TEST_CASE("Probability"){
+TEST_CASE("Probability Calculation Tests"){
     digitClassifier digit;
-    
+    SECTION(){
+        
+    }
 }
